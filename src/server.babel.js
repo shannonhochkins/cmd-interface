@@ -8,6 +8,9 @@ import openurl from 'openurl';
 import config from '../configs/webpack.config.js';
 import general from '../configs/general.config.js';
 import socketio from 'socket.io';
+import npmRun from 'npm-run';
+import childProcess from 'child_process';
+
 
 const {host, port} = general;
 const app = express();
@@ -15,7 +18,7 @@ const compiler = webpack(config);
 
 
 app.use(webpackDevMiddleware(compiler, {
-	noInfo: true,
+	noInfo: false,
   	publicPath: config.output.publicPath,
     stats: {colors: true}
 }));
@@ -32,5 +35,38 @@ server.listen(port,  () => {
 
 io.on('connection', (socket) => {
   // <insert relevant code here>
-  console.log('connectionssdfsdfsdfsdf');
+  console.log('New Connection');
+
+  socket.on('command:send', $data => {
+  	
+  	const spawn = npmRun.spawn($data.command, $data.arguments.split(' '), { 
+  		stdio: 'inherit' 
+  	});
+
+  	console.log('data', spawn);
+
+  	if (spawn.stdout) {
+  		spawn.stdout.on( 'data', data => {
+		    console.log( `stdout: ${data}` );
+		});	
+  	}
+  	
+  	
+
+    if (spawn.stderr) {
+		spawn.stderr.on( 'data', data => {
+		    console.log( `stderr: ${data}` );
+		});
+	}
+
+	spawn.on( 'close', code => {
+	    console.log( `child process exited with code ${code}` );
+	});
+
+	spawn.on( 'exit', code => {
+	    console.log( `child process exited with code ${code}` );
+	});
+    
+  });
+
 });

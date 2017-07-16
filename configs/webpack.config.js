@@ -6,12 +6,11 @@ import general from './general.config.js';
 const {host, port} = general;
 
 module.exports = {
-    entry: [
-      './src/index.js',
-    ],
+    entry: './src/index.js',
     watch : true,
     output: {
         path: path.join(__dirname, '../dist'),
+        publicPath: `http://${host}:${port}/`,
         filename: 'bundle.js'
     },
     module: {
@@ -20,12 +19,12 @@ module.exports = {
 	            test: /\.js$/,
 	            loader: 'babel-loader',
 	            exclude: /node_modules/
-	        }, 
+	        }
         ]
     },
     plugins: [
-      new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({
     	 title : 'CMD Interface',
+       template : './src/index.html'
     })]
 };
