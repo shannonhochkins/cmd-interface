@@ -15,16 +15,31 @@ module.exports = {
     },
     module: {
         loaders: [
+            {
+                test: /\.js$/,
+                enforce : 'pre',
+                exclude: /node_modules/,
+                loader : 'import-glob'
+            },
 	        {
 	            test: /\.js$/,
 	            loader: 'babel-loader',
 	            exclude: /node_modules/
-	        }
+            },
+            {
+                test: /\.html$/,
+                exclude: /(node_modules|bower_components)/,
+                loader: 'html-loader',
+            }, {
+                test: /\.scss$/,
+                loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
+            }
         ]
     },
     plugins: [
       new HtmlWebpackPlugin({
-    	 title : 'CMD Interface',
-       template : './src/index.html'
-    })]
+            title : 'CMD Interface',
+            template : './src/index.html'
+        })
+    ]
 };

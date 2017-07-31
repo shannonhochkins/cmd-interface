@@ -1,5 +1,8 @@
+import template from './_application.template.html';
+import './_application.scss';
+
 module.exports = {
-	template : `<h1>heading</h1>`,
+	template,
 	controller : class AppplicationController {
 		/*@ngInject*/
 		constructor(socketFactory) {

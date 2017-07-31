@@ -1,6 +1,7 @@
-
-import application from './application.js';
+import application from './_application.module.js';
 import socketFactory from './socket.factory.js';
+import modules from '../common/**/*.module.js';
+
 
 export default class Initializer {
 	constructor(io) {
@@ -9,7 +10,7 @@ export default class Initializer {
 	}
 
 	build() {
-		return angular.module('cmdInterface', [])
+		return angular.module('cmdInterface', modules.map(m => m.name))
 			.service('socketFactory', socketFactory)
 			.component('application', application);
 	}

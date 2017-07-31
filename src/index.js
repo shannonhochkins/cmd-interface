@@ -1,13 +1,13 @@
 
 import io from 'socket.io-client';
 import general from '../configs/general.config.js';
-import initializer from './core/index.js';
+import core from './core/';
 
 
 const {host, port} = general;
 const socket = io(`http://${host}:${port}`, { reconnect: true });
 
-const angularModule = new initializer(io);
+const angularModule = new core(io);
 
 
 socket.on('connect', onConnect);
